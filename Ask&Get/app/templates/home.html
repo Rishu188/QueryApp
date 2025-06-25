@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    body {
+        background-color: #f9f5f0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h2 {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .input-group input {
+        border-radius: 8px 0 0 8px;
+        border-right: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .input-group button {
+        border-radius: 0 8px 8px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+        border-radius: 12px;
+        border: none;
+    }
+
+    .card:hover {
+        transform: scale(1.01);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #2a2a2a;
+    }
+
+    .card-text {
+        color: #555;
+    }
+
+    .btn-outline-primary {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .badge {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        background-color: #6c757d;
+    }
+</style>
+
+<h2 class="mb-4 text-center">📚 Browse Questions</h2>
+
+<form class="input-group mb-4" method="GET" action="{{ url_for('main.home') }}">
+    <input type="text" class="form-control" name="q" placeholder="Search topics or keywords..." value="{{ request.args.get('q', '') }}">
+    <button class="btn btn-outline-primary" type="submit">🔍 Search</button>
+</form>
+
+{% for q in questions %}
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ q.title }}</h5>
+        <p class="card-text">{{ q.body[:150] }}{% if q.body|length > 150 %}...{% endif %}</p>
+        <span class="badge">{{ q.tag }}</span>
+        <a href="{{ url_for('main.view_question', question_id=q.id) }}" class="btn btn-sm btn-outline-primary float-end">View</a>
+    </div>
+</div>
+{% else %}
+<p>No questions found.</p>
+{% endfor %}
+
+{% endblock %}

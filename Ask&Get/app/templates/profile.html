@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <!-- Profile Card -->
+            <div class="card p-4 shadow-lg rounded-4 border-0" style="background: #fefefe;">
+                <div class="d-flex align-items-center">
+                    <img src="{{ url_for('static', filename='profile_photos/' + user.photo) }}" class="rounded-circle me-4 border border-3 border-primary" width="100" height="100" alt="Profile Photo">
+                    <div>
+                        <h3 class="mb-0">{{ user.username }}</h3>
+                        <p class="text-muted">{{ user.email }}</p>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Update Info -->
+                <h5 class="text-primary mb-3">Update Your Info</h5>
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label fw-semibold") }} {{ form.username(class="form-control shadow-sm") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label fw-semibold") }} {{ form.email(class="form-control shadow-sm") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.photo.label(class="form-label fw-semibold") }} {{ form.photo(class="form-control shadow-sm") }}
+                    </div>
+                    {{ form.submit(class="btn btn-outline-primary px-4 py-2 rounded-pill") }}
+                </form>
+            </div>
+
+            <!-- My Questions Section -->
+            <div class="mt-5">
+                <h5 class="mb-3 text-secondary">📌 My Questions</h5>
+                {% for question in user.questions %}
+                <div class="card p-3 mb-2 border-start border-4 border-primary shadow-sm rounded-3">
+                    <h6 class="mb-1">{{ question.title }}</h6>
+                    <small class="text-muted">{{ question.created_at.strftime('%Y-%m-%d') }}</small>
+                </div>
+                {% else %}
+                <p class="text-muted mt-2">You haven’t asked any questions yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional Custom Styles -->
+<style>
+    body {
+        background: linear-gradient(to right, #f0f2f5, #e0f7fa);
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    h3,
+    h5,
+    h6 {
+        font-weight: 600;
+    }
+    
+    .form-control:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container my-5">
+    <div class="p-4 rounded shadow-sm bg-white">
+        <h2 class="mb-3 text-primary">{{ question.title }}</h2>
+        <p class="text-muted">
+            <span class="tag">{{ question.tag }}</span> | Asked by: <strong>{{ question.author.username }}</strong>
+        </p>
+        <hr />
+        <p class="fs-5">{{ question.body }}</p>
+    </div>
+
+    <div class="mt-5">
+        <h4 class="text-dark mb-3">Answers</h4>
+
+        {% for answer in question.answers %}
+        <div class="card answer-card my-3">
+            <div class="card-body">
+                <p class="card-text">{{ answer.body }}</p>
+                <small class="text-muted">Answered by: {{ answer.author.username }}</small>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-muted">No answers yet.</p>
+        {% endfor %}
+
+        <!-- Answer Button -->
+        <div class="text-end">
+            <button class="btn btn-success mt-4" data-bs-toggle="modal" data-bs-target="#answerModal">
+                <i class="bi bi-pencil-square"></i> Answer this Question
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Answer -->
+<div class="modal fade" id="answerModal" tabindex="-1" aria-labelledby="answerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="answerModalLabel">Submit Your Answer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        {{ form.body.label(class="form-label fw-bold") }} {{ form.body(class="form-control", rows="4") }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send-fill"></i> Submit Answer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    body {
+        background: linear-gradient(135deg, #dfe9f3, #e6cfff);
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .tag {
+        background-color: #cffafe;
+        color: #0c4a6e;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+    
+    .answer-card {
+        border-left: 5px solid #0d6efd;
+        border-radius: 12px;
+        background-color: #f8f9fa;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    .answer-card:hover {
+        background-color: #eef2f7;
+    }
+    
+    .btn-success {
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    
+    .modal-content {
+        border-radius: 12px;
+    }
+    
+    .modal-body {
+        background-color: #fefefe;
+    }
+</style>
+
+<!-- Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" /> {% endblock %}

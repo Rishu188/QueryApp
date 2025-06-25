@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Query App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Optional: Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+        }
+        
+        footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            background-color: hsl(301, 36%, 63%);
+            text-align: center;
+        }
+        
+        body {
+            background-color: hsl(301, 36%, 63%);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .card {
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: scale(1.01);
+        }
+        
+        .btn-primary,
+        .btn-success {
+            border-radius: 8px;
+            padding: 8px 16px;
+        }
+        
+        .btn-success:hover {
+            background-color: #198754;
+            color: white;
+        }
+        
+        .modal-content {
+            border-radius: 12px;
+        }
+        
+        .tag {
+            background-color: #9dcff1;
+            color: #3d03a1;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('main.home') }}">Ask&Get</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.ask_question') }}">Ask</a>
+                    </li>
+                </ul>
+
+                <!-- Search Form -->
+                <form class="d-flex me-3" method="GET" action="{{ url_for('main.search') }}">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+
+                <!-- Auth Links -->
+                <ul class="navbar-nav">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.profile', username=current_user.username) }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.register') }}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5">
+        <div class="container">
+            <p>&copy; {{ current_year if current_year else 2025 }} College Query App</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

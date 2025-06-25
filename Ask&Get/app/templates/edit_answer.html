@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block content %}
+<h2>Edit Your Answer</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.body.label(class="form-label") }} {{ form.body(class="form-control", rows=5) }}
+    </div>
+    <button type="submit" class="btn btn-success">Update Answer</button>
+    <a href="{{ url_for('main.view_question', question_id=answer.question.id) }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
